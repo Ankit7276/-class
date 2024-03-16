@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File Upload Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    #file-upload-container {
+      width: 400px;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    input[type="file"] {
+      margin-bottom: 10px;
+    }
+
+    #file-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .file-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 8px;
+      margin-bottom: 8px;
+    }
+
+    .file-item a {
+      text-decoration: none;
+      color: #007bff;
+      margin-right: 10px;
+    }
+
+    .file-item button {
+      background-color: #dc3545;
+      color: #fff;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="file-upload-container">
+    <h2>File Upload</h2>
+    <input type="file" id="pdf-input" accept=".pdf" multiple>
+    <input type="file" id="video-input" accept="video/*" multiple>
+    <input type="file" id="audio-input" accept="audio/*" multiple>
+    <ul id="file-list"></ul>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const pdfInput = document.getElementById('pdf-input');
+      const videoInput = document.getElementById('video-input');
+      const audioInput = document.getElementById('audio-input');
+      const fileList = document.getElementById('file-list');
+
+      function handleFileInputChange(input, fileType) {
+        input.addEventListener('change', (event) => {
+          const files = event.target.files;
+          Array.from(files).forEach((file) => {
+            const listItem = document.createElement('li');
+            listItem.classList.add('file-item');
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(file);
+            link.target = '_blank';
+            link.textContent = file.name;
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete';
+            deleteButton.addEventListener('click', () => {
+              listItem.remove();
+            });
+            listItem.appendChild(link);
+            listItem.appendChild(deleteButton);
+            fileList.appendChild(listItem);
+          });
+        });
+      }
+
+      handleFileInputChange(pdfInput, 'pdf');
+      handleFileInputChange(videoInput, 'video');
+      handleFileInputChange(audioInput, 'audio');
+    });
+  </script>
+</body>
+</html>
